@@ -1,6 +1,6 @@
 'use strict';
 
-let totalVotes = 10;
+let totalVotes = 25;
 let allItems = [];
 console.log(allItems);
 
