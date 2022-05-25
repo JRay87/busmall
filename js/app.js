@@ -15,7 +15,10 @@ let currRound = [];
 
 let showResultsButton = document.getElementById('results-button');
 
-let ctx = document.getElementById('my-chart');
+// let resultsList = document.getElementById('results-list');
+
+let ctx = document.getElementById('my-chart').getContext('2d');
+
 
 function Item(name, fileExtension = 'jpg') {
   this.name = name;
@@ -216,6 +219,8 @@ function handleClick(event) {
   totalVotes--;
   let imgClicked = event.target.alt;
 
+  // getRand();
+
   let flag = true;
 
   while (flag) {
@@ -239,11 +244,12 @@ function handleClick(event) {
     imgContainer.removeEventListener('click', handleClick);
   }
 }
+// while new values === stored values
+renderImages();
+if (totalVotes === 0) {
+  imgContainer.removeEventListener('click', handleClick);
+}
 
-// renderImages();
-// if (totalVotes === 0) {
-//   imgContainer.removeEventListener('click', handleClick);
-// }
 
 function handleShowResults() {
   if (totalVotes === 0) {

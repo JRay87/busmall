@@ -1,3 +1,5 @@
 # busmall
 
-<!-- collaborated with Kris Dunning for Lab 12 -->
+
+Colloborated with Kris Dunning for array verification .js 220-232
+
