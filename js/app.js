@@ -15,10 +15,7 @@ let currRound = [];
 
 let showResultsButton = document.getElementById('results-button');
 
-// let resultsList = document.getElementById('results-list');
-
 let ctx = document.getElementById('my-chart').getContext('2d');
-
 
 function Item(name, fileExtension = 'jpg') {
   this.name = name;
@@ -28,25 +25,32 @@ function Item(name, fileExtension = 'jpg') {
   allItems.push(this);
 }
 
-new Item('bag');
-new Item('banana');
-new Item('bathroom');
-new Item('boots');
-new Item('breakfast');
-new Item('bubblegum');
-new Item('chair');
-new Item('cthulhu');
-new Item('dog-duck');
-new Item('dragon');
-new Item('pen');
-new Item('pet-sweep');
-new Item('scissors');
-new Item('shark');
-new Item('sweep', 'png');
-new Item('tauntaun');
-new Item('unicorn');
-new Item('water-can');
-new Item('wine-glass');
+let retreivedItems = localStorage.getItem('items');
+let parsedItems = JSON.parse(retreivedItems);
+
+if(retreivedItems){
+  allItems = parsedItems;
+} else {
+  new Item('bag');
+  new Item('banana');
+  new Item('bathroom');
+  new Item('boots');
+  new Item('breakfast');
+  new Item('bubblegum');
+  new Item('chair');
+  new Item('cthulhu');
+  new Item('dog-duck');
+  new Item('dragon');
+  new Item('pen');
+  new Item('pet-sweep');
+  new Item('scissors');
+  new Item('shark');
+  new Item('sweep', 'png');
+  new Item('tauntaun');
+  new Item('unicorn');
+  new Item('water-can');
+  new Item('wine-glass');
+}
 
 
 function getRandomIndex() {
@@ -219,8 +223,6 @@ function handleClick(event) {
   totalVotes--;
   let imgClicked = event.target.alt;
 
-  // getRand();
-
   let flag = true;
 
   while (flag) {
@@ -242,13 +244,11 @@ function handleClick(event) {
   renderImages();
   if (totalVotes === 0) {
     imgContainer.removeEventListener('click', handleClick);
+    let stringItems = JSON.stringify(allItems);
+    localStorage.setItem('items', stringItems);
   }
 }
-// while new values === stored values
-renderImages();
-if (totalVotes === 0) {
-  imgContainer.removeEventListener('click', handleClick);
-}
+
 
 
 function handleShowResults() {
