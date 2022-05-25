@@ -12,6 +12,7 @@ let imgThree = document.getElementById('img-three');
 let prevRound = [];
 let currRound = [];
 
+
 let showResultsButton = document.getElementById('results-button');
 // let resultsList = document.getElementById('results-list');
 
@@ -50,40 +51,44 @@ function getRandomIndex() {
   return Math.floor(Math.random() * allItems.length);
 }
 
-function renderImages() {
-
-  let itemOneIndex = getRandomIndex();
-  let itemTwoIndex = getRandomIndex();
-  let itemThreeIndex = getRandomIndex();
-  currRound.push(this);
-
-  while (itemOneIndex === itemTwoIndex || itemOneIndex === itemThreeIndex || itemTwoIndex === itemThreeIndex) {
-    itemTwoIndex = getRandomIndex();
-    itemThreeIndex = getRandomIndex();
-    prevRound.push(itemOneIndex, itemTwoIndex, itemThreeIndex);
-  } if (prevRound === currRound) {
-    itemOneIndex = getRandomIndex();
-    itemTwoIndex = getRandomIndex();
-    itemThreeIndex = getRandomIndex();
-    currRound.push(this);
+function getRand() {
+  currRound = [];
+  let flag = true;
+  currRound.push(getRandomIndex());
+  currRound.push(getRandomIndex());
+  currRound.push(getRandomIndex());
+  while (flag) {
+    if (currRound[0] !== currRound[1] && currRound[0] !== currRound[2] && currRound[1] !== currRound[2]) {
+      flag = false;
+    } else {
+      currRound = [];
+      currRound.push(getRandomIndex());
+      currRound.push(getRandomIndex());
+      currRound.push(getRandomIndex());
+    }
   }
+}
 
-  // while
+getRand();
 
-  imgOne.src = allItems[itemOneIndex].photo;
-  imgOne.alt = allItems[itemOneIndex].name;
-  allItems[itemOneIndex].views++;
+function renderImages() {
+  prevRound = currRound;
 
-  imgTwo.src = allItems[itemTwoIndex].photo;
-  imgTwo.alt = allItems[itemTwoIndex].name;
-  allItems[itemTwoIndex].views++;
+  imgOne.src = allItems[currRound[0]].photo;
+  imgOne.alt = allItems[currRound[0]].name;
+  allItems[currRound[0]].views++;
 
-  imgThree.src = allItems[itemThreeIndex].photo;
-  imgThree.alt = allItems[itemThreeIndex].name;
-  allItems[itemThreeIndex].views++;
+  imgTwo.src = allItems[currRound[1]].photo;
+  imgTwo.alt = allItems[currRound[1]].name;
+  allItems[currRound[1]].views++;
+
+  imgThree.src = allItems[currRound[2]].photo;
+  imgThree.alt = allItems[currRound[2]].name;
+  allItems[currRound[2]].views++;
 }
 
 renderImages();
+
 
 function renderChart() {
   let itemNames = [];
@@ -211,17 +216,34 @@ function renderChart() {
 function handleClick(event) {
   totalVotes--;
   let imgClicked = event.target.alt;
+  // getRand();
+  let flag = true;
+
+  while (flag) {
+    flag = false;
+    getRand();
+    for (let i = 0; i < currRound.length; i++) {
+
+      for (let j = 0; j < prevRound.length; j++) {
+        if (prevRound[j] === currRound[i])
+          flag = true;
+      }
+    }
+  }
   for (let i = 0; i < allItems.length; i++) {
     if (imgClicked === allItems[i].name) {
       allItems[i].votes++;
     }
-    // prevRound.push(itemOneIndex, itemTwoIndex, itemThreeIndex);
   }
-
   renderImages();
   if (totalVotes === 0) {
     imgContainer.removeEventListener('click', handleClick);
   }
+}
+// while new values === stored values
+renderImages();
+if (totalVotes === 0) {
+  imgContainer.removeEventListener('click', handleClick);
 }
 
 function handleShowResults() {
@@ -233,6 +255,3 @@ function handleShowResults() {
 
 imgContainer.addEventListener('click', handleClick);
 showResultsButton.addEventListener('click', handleShowResults);
-
-
-

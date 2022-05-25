@@ -27,9 +27,7 @@ img {
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
-li {
-  text-decoration: underline #8d90b0;
-  color: #100900;
-  font-family: Arial, Helvetica, sans-serif;
-  margin-top: 10px;
+#my-chart {
+  max-width: 75%;
+  max-height: 75%;
 }
