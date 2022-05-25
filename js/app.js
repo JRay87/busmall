@@ -9,8 +9,13 @@ let imgOne = document.getElementById('img-one');
 let imgTwo = document.getElementById('img-two');
 let imgThree = document.getElementById('img-three');
 
+let prevRound = [];
+let currRound = [];
+
+
 let showResultsButton = document.getElementById('results-button');
-let resultsList = document.getElementById('results-list');
+
+let ctx = document.getElementById('my-chart');
 
 function Item(name, fileExtension = 'jpg') {
   this.name = name;
@@ -41,59 +46,209 @@ new Item('water-can');
 new Item('wine-glass');
 
 
-function getRandomIndex(){
-  return Math.floor(Math.random()*allItems.length);
+function getRandomIndex() {
+  return Math.floor(Math.random() * allItems.length);
 }
 
-function renderImages(){
-
-  let itemOneIndex = getRandomIndex();
-  let itemTwoIndex = getRandomIndex();
-  let itemThreeIndex = getRandomIndex();
-
-  while(itemOneIndex === itemTwoIndex || itemOneIndex === itemThreeIndex || itemTwoIndex === itemThreeIndex) {
-    itemTwoIndex = getRandomIndex();
-    itemThreeIndex = getRandomIndex();
+function getRand() {
+  currRound = [];
+  let flag = true;
+  currRound.push(getRandomIndex());
+  currRound.push(getRandomIndex());
+  currRound.push(getRandomIndex());
+  while (flag) {
+    if (currRound[0] !== currRound[1] && currRound[0] !== currRound[2] && currRound[1] !== currRound[2]) {
+      flag = false;
+    } else {
+      currRound = [];
+      currRound.push(getRandomIndex());
+      currRound.push(getRandomIndex());
+      currRound.push(getRandomIndex());
+    }
   }
+}
 
-  imgOne.src = allItems[itemOneIndex].photo;
-  imgOne.alt = allItems[itemOneIndex].name;
-  allItems[itemOneIndex].views++;
+getRand();
 
-  imgTwo.src = allItems[itemTwoIndex].photo;
-  imgTwo.alt = allItems[itemTwoIndex].name;
-  allItems[itemTwoIndex].views++;
+function renderImages() {
+  prevRound = currRound;
 
-  imgThree.src = allItems[itemThreeIndex].photo;
-  imgThree.alt = allItems[itemThreeIndex].name;
-  allItems[itemThreeIndex].views++;
+  imgOne.src = allItems[currRound[0]].photo;
+  imgOne.alt = allItems[currRound[0]].name;
+  allItems[currRound[0]].views++;
+
+  imgTwo.src = allItems[currRound[1]].photo;
+  imgTwo.alt = allItems[currRound[1]].name;
+  allItems[currRound[1]].views++;
+
+  imgThree.src = allItems[currRound[2]].photo;
+  imgThree.alt = allItems[currRound[2]].name;
+  allItems[currRound[2]].views++;
 }
 
 renderImages();
 
 
+function renderChart() {
+  let itemNames = [];
+  let itemVotes = [];
+  let itemViews = [];
+
+  for (let i = 0; i < allItems.length; i++) {
+    itemNames.push(allItems[i].name);
+    itemVotes.push(allItems[i].votes);
+    itemViews.push(allItems[i].views);
+  }
+
+  let myChartObj = {
+    type: 'bar',
+    data: {
+      labels: itemNames,
+      datasets: [{
+        label: 'Votes',
+        data: itemVotes,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(26, 206, 86, 0.2)',
+          'rgba(140, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(110, 99, 132, 0.2)',
+          'rgba(130, 162, 235, 0.2)',
+          'rgba(260, 206, 86, 0.2)',
+          'rgba(15, 192, 192, 0.2)',
+          'rgba(32, 99, 132, 0.2)',
+          'rgba(40, 162, 235, 0.2)',
+          'rgba(35, 206, 86, 0.2)',
+          'rgba(120, 192, 192, 0.2)',
+          'rgba(200, 99, 132, 0.2)',
+          'rgba(125, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 120, 192, 0.2)',
+          'rgba(153, 200, 255, 0.2)',
+          'rgba(255, 159,200, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(26, 206, 86, 1)',
+          'rgba(140, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(110, 99, 132, 1)',
+          'rgba(130, 162, 235, 1)',
+          'rgba(260, 206, 86, 1)',
+          'rgba(15, 192, 192, 1)',
+          'rgba(32, 99, 132, 1)',
+          'rgba(40, 162, 235, 1)',
+          'rgba(35, 206, 86, 1)',
+          'rgba(120, 192, 192, 1)',
+          'rgba(200, 99, 132, 1)',
+          'rgba(125, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 120, 192, 1)',
+          'rgba(153, 200, 255, 1)',
+          'rgba(255, 159,200, 1)'
+        ],
+        borderWidth: 1
+      },
+      {
+        label: 'Times Viewed',
+        data: itemViews,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(26, 206, 86, 0.2)',
+          'rgba(140, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(110, 99, 132, 0.2)',
+          'rgba(130, 162, 235, 0.2)',
+          'rgba(260, 206, 86, 0.2)',
+          'rgba(15, 192, 192, 0.2)',
+          'rgba(32, 99, 132, 0.2)',
+          'rgba(40, 162, 235, 0.2)',
+          'rgba(35, 206, 86, 0.2)',
+          'rgba(120, 192, 192, 0.2)',
+          'rgba(200, 99, 132, 0.2)',
+          'rgba(125, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 120, 192, 0.2)',
+          'rgba(153, 200, 255, 0.2)',
+          'rgba(255, 159,200, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(26, 206, 86, 1)',
+          'rgba(140, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(110, 99, 132, 1)',
+          'rgba(130, 162, 235, 1)',
+          'rgba(260, 206, 86, 1)',
+          'rgba(15, 192, 192, 1)',
+          'rgba(32, 99, 132, 1)',
+          'rgba(40, 162, 235, 1)',
+          'rgba(35, 206, 86, 1)',
+          'rgba(120, 192, 192, 1)',
+          'rgba(200, 99, 132, 1)',
+          'rgba(125, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 120, 192, 1)',
+          'rgba(153, 200, 255, 1)',
+          'rgba(255, 159,200, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  };
+  new Chart(ctx, myChartObj);
+
+}
+
+
 function handleClick(event) {
   totalVotes--;
   let imgClicked = event.target.alt;
-  for(let i = 0; i < allItems.length; i++){
-    if(imgClicked === allItems[i].name){
+
+  let flag = true;
+
+  while (flag) {
+    flag = false;
+    getRand();
+    for (let i = 0; i < currRound.length; i++) {
+
+      for (let j = 0; j < prevRound.length; j++) {
+        if (prevRound[j] === currRound[i])
+          flag = true;
+      }
+    }
+  }
+  for (let i = 0; i < allItems.length; i++) {
+    if (imgClicked === allItems[i].name) {
       allItems[i].votes++;
     }
   }
-
   renderImages();
-  if(totalVotes === 0){
+  if (totalVotes === 0) {
     imgContainer.removeEventListener('click', handleClick);
   }
 }
 
-function handleShowResults(){
-  if(totalVotes === 0){
-    for(let i = 0; i < allItems.length; i++){
-      let liElem = document.createElement('li');
-      liElem.textContent = `${allItems[i].name} was picked ${allItems[i].votes} times of the ${allItems[i].views} times it was shown.`;
-      resultsList.appendChild(liElem);
-    }
+// renderImages();
+// if (totalVotes === 0) {
+//   imgContainer.removeEventListener('click', handleClick);
+// }
+
+function handleShowResults() {
+  if (totalVotes === 0) {
+    renderChart();
+    imgContainer.removeEventListener('click', handleShowResults);
   }
 }
 
