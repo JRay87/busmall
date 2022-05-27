@@ -1,5 +1,6 @@
 'use strict';
 
+// Global Variables
 let totalVotes = 25;
 let allItems = [];
 console.log(allItems);
@@ -16,6 +17,8 @@ let currRound = [];
 let showResultsButton = document.getElementById('results-button');
 
 let ctx = document.getElementById('my-chart').getContext('2d');
+
+// Constructor Function
 
 function Item(name, fileExtension = 'jpg') {
   this.name = name;
@@ -52,7 +55,7 @@ if(retreivedItems){
   new Item('wine-glass');
 }
 
-
+// Random Functions
 function getRandomIndex() {
   return Math.floor(Math.random() * allItems.length);
 }
@@ -77,6 +80,7 @@ function getRand() {
 
 getRand();
 
+// Render Functions
 function renderImages() {
   prevRound = currRound;
 
@@ -218,7 +222,7 @@ function renderChart() {
 
 }
 
-
+// Eventlisteners etc.,
 function handleClick(event) {
   totalVotes--;
   let imgClicked = event.target.alt;
